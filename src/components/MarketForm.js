@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
-import { 
-  FormControl, 
-  InputLabel, 
-  Input, 
-  Button, 
-  Grid, 
-  Select, 
-  MenuItem, 
-  TextField, 
-  Checkbox, 
+import {
+  FormControl,
+  InputLabel,
+  Input,
+  Button,
+  Grid,
+  Select,
+  MenuItem,
+  TextField,
+  Checkbox,
   FormControlLabel,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Typography,
-  Tooltip
+  Tooltip,
+  InputAdornment, // Added import for InputAdornment
 } from '@material-ui/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import InfoIcon from '@material-ui/icons/Info';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CountryList from 'react-select-country-list';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Upload, message } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
-import './MarketForm.css'; // Custom CSS for Ant Design
+import './MarketForm.css';
 
 const { Dragger } = Upload;
 
@@ -114,11 +115,28 @@ const MarketForm = () => {
   };
 
   return (
-    <Grid container justify="center" alignItems="center" style={{ minHeight: '100vh', marginLeft: '20px' }}>
+    <Grid container justify="center" alignItems="center" style={{ minHeight: '100vh', marginLeft: '80px' }} className="MarketFormContainer">
       <Grid item xs={6}>
         {page === 1 && (
           <form onSubmit={handleSubmit}>
-            <h2 style={{ fontWeight: 'bold' }}>Basic Information</h2>
+
+            {/* Title and Description */}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px', width: 'fit-content' }}>
+              <Typography variant="h3" style={{ fontWeight: 'bold', color: 'black' }}>
+                You make the
+                <span style={{ color: '#FFEB3B' }}> RULES</span>
+              </Typography>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', width: 'fit-content' }}>
+              <Typography variant="body1" style={{ color: 'black', marginRight: '10px' }}>
+                These rules impact the borrower’s experience.
+              </Typography>
+              <Typography variant="body1" style={{ color: 'black' }}>
+                All selections made here can be updated in Settings later.
+              </Typography>
+            </div>
+            
+            {/* Form Inputs */}
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <FormControl fullWidth variant="outlined" margin="normal">
@@ -145,18 +163,23 @@ const MarketForm = () => {
                   onChange={(e) => setMarketName(e.target.value)}
                   margin="normal"
                   required
+                  className="MarketFormTextField"
+                  style={{ width: '100%' }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  variant="outlined"
-                  label="Market Type"
-                  value={marketType}
-                  onChange={(e) => setMarketType(e.target.value)}
-                  margin="normal"
-                  required
-                />
+                <FormControl fullWidth variant="outlined" margin="normal">
+                  <InputLabel htmlFor="marketType">Market Type</InputLabel>
+                  <Select
+                    label="Market Type"
+                    value={marketType}
+                    onChange={(e) => setMarketType(e.target.value)}
+                  >
+                    <MenuItem value="wholesale">Wholesale</MenuItem>
+                    <MenuItem value="loan">Loan</MenuItem>
+                    <MenuItem value="asset">Asset</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={6}>
                 <TextField
@@ -167,6 +190,8 @@ const MarketForm = () => {
                   onChange={(e) => setAssetClass(e.target.value)}
                   margin="normal"
                   required
+                  className="MarketFormTextField"
+                  style={{ width: '100%' }} 
                 />
               </Grid>
               <Grid item xs={6}>
@@ -178,6 +203,15 @@ const MarketForm = () => {
                   onChange={(e) => setWebsite(e.target.value)}
                   margin="normal"
                   required
+                  className="MarketFormTextField"
+                  style={{ width: '100%' }} 
+                  InputProps={{ 
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        http://
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -189,10 +223,16 @@ const MarketForm = () => {
                   onChange={(e) => setDataRoomLink(e.target.value)}
                   margin="normal"
                   required
+                  className="MarketFormTextField"
+                  style={{ width: '100%' }} 
                 />
               </Grid>
             </Grid>
+
+            {/* Error Message */}
             {hasInput && <Typography variant="body2" color="error">Please fill in all fields.</Typography>}
+            
+            {/* Buttons */}
             <div style={{ marginTop: '12px' }}>
               <Button 
                 type="button" 

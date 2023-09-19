@@ -1,23 +1,30 @@
 /* MarketForm.css */
 
 .upload-container {
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-  }
-  
-  .ant-upload-drag-icon {
-    font-size: 30px;
-    color: #1890ff;
-  }
-  
-  .ant-upload-text {
-    color: #666;
-  }
-  
-  .ant-upload-hint {
-    color: #666;
-  }
-  
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.ant-upload-drag-icon {
+  font-size: 30px;
+  color: #1890ff;
+}
+
+.ant-upload-text {
+  color: #666;
+}
+
+.ant-upload-hint {
+  color: #666;
+
+}
+
+
+
+
+
+
+

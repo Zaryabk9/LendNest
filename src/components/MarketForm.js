@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   FormControl,
   InputLabel,
   Input,
+  Box,
   Button,
   Grid,
   Select,
@@ -15,50 +16,66 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  Tooltip,
   InputAdornment, // Added import for InputAdornment
-} from '@material-ui/core';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import InfoIcon from '@material-ui/icons/Info';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CountryList from 'react-select-country-list';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Upload, message } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
-import './MarketForm.css';
+} from "@material-ui/core";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import InfoIcon from "@material-ui/icons/Info";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import CountryList from "react-select-country-list";
+// import "bootstrap/dist/css/bootstrap.min.css";
+import { Upload, message } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
+import { styled } from "@mui/material/styles";
+// import "./MarketForm.css";
 
 const { Dragger } = Upload;
 
 const MarketForm = () => {
-  const [country, setCountry] = useState('');
-  const [marketName, setMarketName] = useState('');
-  const [marketType, setMarketType] = useState('');
-  const [assetClass, setAssetClass] = useState('');
-  const [website, setWebsite] = useState('');
-  const [dataRoomLink, setDataRoomLink] = useState('');
-  const [loanRequestsExpire, setLoanRequestsExpire] = useState('');
-  const [loanPaymentCycle, setLoanPaymentCycle] = useState('');
-  const [defaultLoans, setDefaultLoans] = useState('');
-  const [loanProcessFee, setLoanProcessFee] = useState('');
-  const [marketDescription, setMarketDescription] = useState('');
+  const [country, setCountry] = useState("");
+  const [marketName, setMarketName] = useState("");
+  const [marketType, setMarketType] = useState("");
+  const [assetClass, setAssetClass] = useState("");
+  const [website, setWebsite] = useState("");
+  const [dataRoomLink, setDataRoomLink] = useState("");
+  const [loanRequestsExpire, setLoanRequestsExpire] = useState("");
+  const [loanPaymentCycle, setLoanPaymentCycle] = useState("");
+  const [defaultLoans, setDefaultLoans] = useState("");
+  const [loanProcessFee, setLoanProcessFee] = useState("");
+  const [marketDescription, setMarketDescription] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [page, setPage] = useState(1);
   const [hasInput, setHasInput] = useState(false);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [isToolOpen, setisToolOpen] = useState(false);
 
   const countryOptions = CountryList().getData();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted');
+    console.log("Form submitted");
   };
 
   const handleNext = () => {
-    if (page === 1 && (!country || !marketName || !marketType || !assetClass || !website || !dataRoomLink)) {
+    if (
+      page === 1 &&
+      (!country ||
+        !marketName ||
+        !marketType ||
+        !assetClass ||
+        !website ||
+        !dataRoomLink)
+    ) {
       setHasInput(true);
       return;
     }
-    if (page === 2 && (!loanRequestsExpire || !loanPaymentCycle || !defaultLoans || !loanProcessFee)) {
+    if (
+      page === 2 &&
+      (!loanRequestsExpire ||
+        !loanPaymentCycle ||
+        !defaultLoans ||
+        !loanProcessFee)
+    ) {
       setHasInput(true);
       return;
     }
@@ -70,10 +87,23 @@ const MarketForm = () => {
     setPage(page - 1);
   };
 
+  const CustomWidthTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))({
+    [`& .${tooltipClasses.tooltip}`]: {
+      maxWidth: 500,
+    },
+  });
+  const longText = `
+Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus.
+Praesent non nunc mollis, fermentum neque at, semper arcu.
+Nullam eget est sed sem iaculis gravida eget vitae justo.
+`;
+
   const handleImageUpload = (info) => {
-    if (info.file.status === 'done') {
+    if (info.file.status === "done") {
       message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
+    } else if (info.file.status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
   };
@@ -115,38 +145,88 @@ const MarketForm = () => {
   };
 
   return (
-    <Grid container justify="center" alignItems="center" style={{ minHeight: '100vh', marginLeft: '80px' }} className="MarketFormContainer">
+    <Grid
+      container
+      justify="center"
+      alignItems="center"
+      style={{ minHeight: "100vh", marginLeft: "80px" }}
+      className="MarketFormContainer"
+    >
       <Grid item xs={6}>
         {page === 1 && (
           <form onSubmit={handleSubmit}>
-
             {/* Title and Description */}
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px', width: 'fit-content' }}>
-              <Typography variant="h3" style={{ fontWeight: 'bold', color: 'black' }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+
+                marginBottom: "12px",
+                width: "100%",
+              }}
+            >
+              <Typography
+                variant="h3"
+                style={{
+                  display: "flex",
+                  fontWeight: "bold",
+                  color: "black",
+                  justifyContent: "center",
+                  margin: "auto",
+                  alignItems: "center",
+                }}
+              >
                 You make the
-                <span style={{ color: '#FFEB3B' }}> RULES</span>
+                <span
+                  style={{
+                    display: "flex",
+                    color: "#FFEB3B",
+                    justifyContent: "center",
+                    margin: "auto",
+                    padding: "10px",
+                  }}
+                >
+                  {" "}
+                  RULES
+                </span>
               </Typography>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', width: 'fit-content' }}>
-              <Typography variant="body1" style={{ color: 'black', marginRight: '10px' }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "20px",
+                width: "fit-content",
+              }}
+            >
+              <Typography
+                variant="body1"
+                style={{ color: "black", marginRight: "10px" }}
+              >
                 These rules impact the borrower’s experience.
               </Typography>
-              <Typography variant="body1" style={{ color: 'black' }}>
+              <Typography variant="body1" style={{ color: "black" }}>
                 All selections made here can be updated in Settings later.
               </Typography>
             </div>
-            
+
             {/* Form Inputs */}
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                <FormControl fullWidth variant="outlined" margin="normal">
-                  <InputLabel htmlFor="country">Country</InputLabel>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  sx={{ m: 6, minWidth: 200 }}
+                >
+                  <InputLabel id="demo-simple-select-label">Country</InputLabel>
                   <Select
+                    abelId="demo-simple-select-label"
+                    id="demo-simple-select"
                     label="Country"
                     value={country}
                     onChange={(e) => setCountry(e.target.value)}
                   >
-                    {countryOptions.map(option => (
+                    {countryOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -161,15 +241,24 @@ const MarketForm = () => {
                   label="Market Name"
                   value={marketName}
                   onChange={(e) => setMarketName(e.target.value)}
-                  margin="normal"
+                  // margin="normal"
                   required
-                  className="MarketFormTextField"
-                  style={{ width: '100%' }}
+                  // className="MarketFormTextField"
+                  // style={{
+                  //   width: "100%",
+                  //   label: {
+                  //     transform: marketName ? "translateY(-200px)" : "none", // Move label up when needed
+                  //     fontSize: marketName ? "0.8rem" : "1rem", // Adjust font size when needed
+                  //     color: marketName ? "#000" : "initial", // Change label color when needed
+                  //     transition:
+                  //       "transform 0.2s ease, font-size 0.2s ease, color 0.2s ease", // Add smooth transitions
+                  //   },
+                  // }}
                 />
               </Grid>
               <Grid item xs={6}>
                 <FormControl fullWidth variant="outlined" margin="normal">
-                  <InputLabel htmlFor="marketType">Market Type</InputLabel>
+                  <InputLabel>Market Type</InputLabel>
                   <Select
                     label="Market Type"
                     value={marketType}
@@ -191,7 +280,7 @@ const MarketForm = () => {
                   margin="normal"
                   required
                   className="MarketFormTextField"
-                  style={{ width: '100%' }} 
+                  style={{ width: "100%" }}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -204,12 +293,10 @@ const MarketForm = () => {
                   margin="normal"
                   required
                   className="MarketFormTextField"
-                  style={{ width: '100%' }} 
-                  InputProps={{ 
+                  style={{ width: "100%" }}
+                  InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">
-                        http://
-                      </InputAdornment>
+                      <InputAdornment position="start">http://</InputAdornment>
                     ),
                   }}
                 />
@@ -224,31 +311,39 @@ const MarketForm = () => {
                   margin="normal"
                   required
                   className="MarketFormTextField"
-                  style={{ width: '100%' }} 
+                  style={{ width: "100%" }}
                 />
               </Grid>
             </Grid>
 
             {/* Error Message */}
-            {hasInput && <Typography variant="body2" color="error">Please fill in all fields.</Typography>}
-            
+            {hasInput && (
+              <Typography variant="body2" color="error">
+                Please fill in all fields.
+              </Typography>
+            )}
+
             {/* Buttons */}
-            <div style={{ marginTop: '12px' }}>
-              <Button 
-                type="button" 
-                onClick={handleNext} 
-                variant="contained" 
+            <div style={{ marginTop: "12px" }}>
+              <Button
+                type="button"
+                onClick={handleNext}
+                variant="contained"
                 color="primary"
-                style={{ borderRadius: '30px', padding: '10px 30px' }}
+                style={{ borderRadius: "30px", padding: "10px 30px" }}
               >
                 {`Continue ${page} of 4`}
               </Button>
-              <Button 
-                type="button" 
-                onClick={handleCancel} 
-                variant="outlined" 
+              <Button
+                type="button"
+                onClick={handleCancel}
+                variant="outlined"
                 color="default"
-                style={{ borderRadius: '30px', padding: '10px 30px', marginLeft: '10px' }}
+                style={{
+                  borderRadius: "30px",
+                  padding: "10px 30px",
+                  marginLeft: "10px",
+                }}
               >
                 Cancel
               </Button>
@@ -257,17 +352,23 @@ const MarketForm = () => {
         )}
         {page === 2 && (
           <form onSubmit={handleSubmit}>
-            <h2 style={{ fontWeight: 'bold' }}>Loan Information</h2>
+            <h2 style={{ fontWeight: "bold" }}>Loan Information</h2>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
                   variant="outlined"
+                  InputLabelProps={{ style: { pointerEvents: "auto" } }}
                   label={
                     <div>
                       Loan Requests Expire
-                      <Tooltip title="Information about Loan Requests Expire">
-                        <InfoIcon color="primary" style={{ marginLeft: '5px', fontSize: '16px' }} />
+                      <Tooltip title="Add some data">
+                        <InfoIcon
+                          disableFocusListener
+                          disableTouchListener
+                          color="primary"
+                          style={{ marginLeft: "5px", fontSize: "16px" }}
+                        />
                       </Tooltip>
                     </div>
                   }
@@ -282,13 +383,27 @@ const MarketForm = () => {
                 <TextField
                   fullWidth
                   variant="outlined"
+                InputLabelProps={{ style: { pointerEvents: "auto" } }}
                   label={
-                    <div>
+                    <>
                       Loan Payment Cycle
-                      <Tooltip title="Information about Loan Payment Cycle">
-                        <InfoIcon color="primary" style={{ marginLeft: '5px', fontSize: '16px' }} />
+                      <Tooltip
+                        title="Information about Loan Payment Cycle"
+                        open={isToolOpen}
+                        onClose={()=>{
+                          setisToolOpen(false);
+                        }}
+                        onOpen={() => {
+                          console.debug("kkkkkkkk")
+                          setisToolOpen(true);
+                        }}
+                      >
+                        <InfoIcon
+                          color="primary"
+                          style={{ marginLeft: "5px", fontSize: "16px" }}
+                        />
                       </Tooltip>
-                    </div>
+                    </>
                   }
                   value={loanPaymentCycle}
                   onChange={(e) => setLoanPaymentCycle(e.target.value)}
@@ -301,11 +416,15 @@ const MarketForm = () => {
                 <TextField
                   fullWidth
                   variant="outlined"
+                  InputLabelProps={{ style: { pointerEvents: "auto" } }}
                   label={
                     <div>
                       Default Loans
                       <Tooltip title="Information about Default Loans">
-                        <InfoIcon color="primary" style={{ marginLeft: '5px', fontSize: '16px' }} />
+                        <InfoIcon
+                          color="primary"
+                          style={{ marginLeft: "5px", fontSize: "16px" }}
+                        />
                       </Tooltip>
                     </div>
                   }
@@ -320,11 +439,15 @@ const MarketForm = () => {
                 <TextField
                   fullWidth
                   variant="outlined"
+                  InputLabelProps={{ style: { pointerEvents: "auto" } }}
                   label={
                     <div>
                       Loan Process Fee
                       <Tooltip title="Information about Loan Process Fee">
-                        <InfoIcon color="primary" style={{ marginLeft: '5px', fontSize: '16px' }} />
+                        <InfoIcon
+                          color="primary"
+                          style={{ marginLeft: "5px", fontSize: "16px" }}
+                        />
                       </Tooltip>
                     </div>
                   }
@@ -337,32 +460,44 @@ const MarketForm = () => {
                 />
               </Grid>
             </Grid>
-            {hasInput && <Typography variant="body2" color="error">Please fill in all fields.</Typography>}
-            <div style={{ marginTop: '12px' }}>
-              <Button 
-                type="button" 
-                onClick={handleBack} 
-                variant="outlined" 
+            {hasInput && (
+              <Typography variant="body2" color="error">
+                Please fill in all fields.
+              </Typography>
+            )}
+            <div style={{ marginTop: "12px" }}>
+              <Button
+                type="button"
+                onClick={handleBack}
+                variant="outlined"
                 color="default"
-                style={{ borderRadius: '30px', padding: '10px 30px' }}
+                style={{ borderRadius: "30px", padding: "10px 30px" }}
               >
                 <ArrowBackIcon /> Back
               </Button>
-              <Button 
-                type="button" 
-                onClick={handleNext} 
-                variant="contained" 
+              <Button
+                type="button"
+                onClick={handleNext}
+                variant="contained"
                 color="primary"
-                style={{ borderRadius: '30px', padding: '10px 30px', marginLeft: '10px' }}
+                style={{
+                  borderRadius: "30px",
+                  padding: "10px 30px",
+                  marginLeft: "10px",
+                }}
               >
                 {`Continue ${page} of 4`}
               </Button>
-              <Button 
-                type="button" 
-                onClick={handleCancel} 
-                variant="outlined" 
+              <Button
+                type="button"
+                onClick={handleCancel}
+                variant="outlined"
                 color="default"
-                style={{ borderRadius: '30px', padding: '10px 30px', marginLeft: '10px' }}
+                style={{
+                  borderRadius: "30px",
+                  padding: "10px 30px",
+                  marginLeft: "10px",
+                }}
               >
                 Cancel
               </Button>
@@ -371,11 +506,11 @@ const MarketForm = () => {
         )}
         {page === 3 && (
           <form onSubmit={handleSubmit}>
-            <h2 style={{ fontWeight: 'bold' }}>Market Image and Description</h2>
+            <h2 style={{ fontWeight: "bold" }}>Market Image and Description</h2>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <div className="upload-container">
-                  <Dragger 
+                  <Dragger
                     name="file"
                     multiple={false}
                     action="//jsonplaceholder.typicode.com/posts/"
@@ -384,10 +519,12 @@ const MarketForm = () => {
                     <p className="ant-upload-drag-icon">
                       <InboxOutlined />
                     </p>
-                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                    <p className="ant-upload-text">
+                      Click or drag file to this area to upload
+                    </p>
                     <p className="ant-upload-hint">
-                      Supports single file upload. Strictly prohibit from uploading company data or other
-                      band files
+                      Supports single file upload. Strictly prohibit from
+                      uploading company data or other band files
                     </p>
                   </Dragger>
                 </div>
@@ -405,32 +542,44 @@ const MarketForm = () => {
                 />
               </Grid>
             </Grid>
-            {hasInput && <Typography variant="body2" color="error">Please fill in all fields.</Typography>}
-            <div style={{ marginTop: '12px' }}>
-              <Button 
-                type="button" 
-                onClick={handleBack} 
-                variant="outlined" 
+            {hasInput && (
+              <Typography variant="body2" color="error">
+                Please fill in all fields.
+              </Typography>
+            )}
+            <div style={{ marginTop: "12px" }}>
+              <Button
+                type="button"
+                onClick={handleBack}
+                variant="outlined"
                 color="default"
-                style={{ borderRadius: '30px', padding: '10px 30px' }}
+                style={{ borderRadius: "30px", padding: "10px 30px" }}
               >
                 <ArrowBackIcon /> Back
               </Button>
-              <Button 
-                type="button" 
-                onClick={handleNext} 
-                variant="contained" 
+              <Button
+                type="button"
+                onClick={handleNext}
+                variant="contained"
                 color="primary"
-                style={{ borderRadius: '30px', padding: '10px 30px', marginLeft: '10px' }}
+                style={{
+                  borderRadius: "30px",
+                  padding: "10px 30px",
+                  marginLeft: "10px",
+                }}
               >
                 {`Continue ${page} of 4`}
               </Button>
-              <Button 
-                type="button" 
-                onClick={handleCancel} 
-                variant="outlined" 
+              <Button
+                type="button"
+                onClick={handleCancel}
+                variant="outlined"
                 color="default"
-                style={{ borderRadius: '30px', padding: '10px 30px', marginLeft: '10px' }}
+                style={{
+                  borderRadius: "30px",
+                  padding: "10px 30px",
+                  marginLeft: "10px",
+                }}
               >
                 Cancel
               </Button>
@@ -439,7 +588,7 @@ const MarketForm = () => {
         )}
         {page === 4 && (
           <form onSubmit={handleSubmit}>
-            <h2 style={{ fontWeight: 'bold' }}>Terms of Service</h2>
+            <h2 style={{ fontWeight: "bold" }}>Terms of Service</h2>
             <FormControlLabel
               control={
                 <Checkbox
@@ -450,31 +599,43 @@ const MarketForm = () => {
               }
               label="I accept the terms of service."
             />
-            {hasInput && <Typography variant="body2" color="error">Please fill in all fields.</Typography>}
-            <div style={{ marginTop: '12px' }}>
-              <Button 
-                type="button" 
-                onClick={handleBack} 
-                variant="outlined" 
+            {hasInput && (
+              <Typography variant="body2" color="error">
+                Please fill in all fields.
+              </Typography>
+            )}
+            <div style={{ marginTop: "12px" }}>
+              <Button
+                type="button"
+                onClick={handleBack}
+                variant="outlined"
                 color="default"
-                style={{ borderRadius: '30px', padding: '10px 30px' }}
+                style={{ borderRadius: "30px", padding: "10px 30px" }}
               >
                 <ArrowBackIcon /> Back
               </Button>
-              <Button 
-                type="submit" 
-                variant="contained" 
+              <Button
+                type="submit"
+                variant="contained"
                 color="primary"
-                style={{ borderRadius: '30px', padding: '10px 30px', marginLeft: '10px' }}
+                style={{
+                  borderRadius: "30px",
+                  padding: "10px 30px",
+                  marginLeft: "10px",
+                }}
               >
                 Submit
               </Button>
-              <Button 
-                type="button" 
-                onClick={handleCancel} 
-                variant="outlined" 
+              <Button
+                type="button"
+                onClick={handleCancel}
+                variant="outlined"
                 color="default"
-                style={{ borderRadius: '30px', padding: '10px 30px', marginLeft: '10px' }}
+                style={{
+                  borderRadius: "30px",
+                  padding: "10px 30px",
+                  marginLeft: "10px",
+                }}
               >
                 Cancel
               </Button>
@@ -483,16 +644,13 @@ const MarketForm = () => {
         )}
       </Grid>
       <Grid item xs={6}>
-        <img 
-          src="https://v2.teller.org/assets/teller_v2_Step3.0c1ebb64.svg" 
+        <img
+          src="https://v2.teller.org/assets/teller_v2_Step3.0c1ebb64.svg"
           alt="Form Illustration"
-          style={{ width: '60%', marginLeft: '20%' }}
+          style={{ width: "60%", marginLeft: "20%" }}
         />
       </Grid>
-      <Dialog
-        open={cancelDialogOpen}
-        onClose={handleCancelCancel}
-      >
+      <Dialog open={cancelDialogOpen} onClose={handleCancelCancel}>
         <DialogTitle>Warning</DialogTitle>
         <DialogContent>
           <p>You have unsaved changes. Are you sure you want to cancel?</p>

@@ -27,6 +27,7 @@ import CountryList from "react-select-country-list";
 import { Upload, message } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import { styled } from "@mui/material/styles";
+import { Description } from "@material-ui/icons";
 // import "./MarketForm.css";
 
 const { Dragger } = Upload;
@@ -59,7 +60,7 @@ const MarketForm = () => {
   const handleNext = () => {
     if (
       page === 1 &&
-      (!country ||
+      (!marketDescription ||
         !marketName ||
         !marketType ||
         !assetClass ||
@@ -75,11 +76,25 @@ const MarketForm = () => {
         !loanPaymentCycle ||
         !defaultLoans ||
         !loanProcessFee)
-    ) {
+    )
+    
+    
+    {
+
+      
       setHasInput(true);
       return;
     }
-    setPage(page + 1);
+
+    
+      // Display an error message for loanProcessFee exceeding 100
+      // eslint-disable-next-line no-lone-blocks
+      
+      
+      
+        setPage(page + 1);
+      
+      
     setHasInput(false);
   };
 
@@ -213,47 +228,27 @@ Nullam eget est sed sem iaculis gravida eget vitae justo.
             {/* Form Inputs */}
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                <FormControl
+              <TextField
                   fullWidth
                   variant="outlined"
-                  sx={{ m: 6, minWidth: 200 }}
-                >
-                  <InputLabel id="demo-simple-select-label">Country</InputLabel>
-                  <Select
-                    abelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                  >
-                    {countryOptions.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                  label="Name"
+                  value={marketName}
+                  onChange={(e) => setMarketName(e.target.value)}
+                  // margin="normal"
+                  required
+                 
+                />
               </Grid>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
                   variant="outlined"
-                  label="Market Name"
-                  value={marketName}
-                  onChange={(e) => setMarketName(e.target.value)}
+                  label="Description"
+                  value={marketDescription}
+                  onChange={(e) => setMarketDescription(e.target.value)}
                   // margin="normal"
                   required
-                  // className="MarketFormTextField"
-                  // style={{
-                  //   width: "100%",
-                  //   label: {
-                  //     transform: marketName ? "translateY(-200px)" : "none", // Move label up when needed
-                  //     fontSize: marketName ? "0.8rem" : "1rem", // Adjust font size when needed
-                  //     color: marketName ? "#000" : "initial", // Change label color when needed
-                  //     transition:
-                  //       "transform 0.2s ease, font-size 0.2s ease, color 0.2s ease", // Add smooth transitions
-                  //   },
-                  // }}
+                 
                 />
               </Grid>
               <Grid item xs={6}>
@@ -330,8 +325,13 @@ Nullam eget est sed sem iaculis gravida eget vitae justo.
                 onClick={handleNext}
                 variant="contained"
                 color="primary"
-                style={{ borderRadius: "30px", padding: "10px 30px" }}
+                style={{
+                  borderRadius: "30px",
+                  padding: "10px 30px",
+                  marginLeft: "5px",
+                }}
               >
+              
                 {`Continue ${page} of 4`}
               </Button>
               <Button
@@ -342,7 +342,8 @@ Nullam eget est sed sem iaculis gravida eget vitae justo.
                 style={{
                   borderRadius: "30px",
                   padding: "10px 30px",
-                  marginLeft: "10px",
+                  marginLeft: "80px",
+                  marginRight: "80px",
                 }}
               >
                 Cancel
@@ -412,6 +413,10 @@ Nullam eget est sed sem iaculis gravida eget vitae justo.
                   type="number"
                 />
               </Grid>
+                  
+              
+
+
               <Grid item xs={6}>
                 <TextField
                   fullWidth
@@ -435,6 +440,57 @@ Nullam eget est sed sem iaculis gravida eget vitae justo.
                   type="number"
                 />
               </Grid>
+
+              
+ 
+<Grid container spacing={2}>
+<Grid item xs={2}>
+{loanRequestsExpire < 0 && (
+    <Typography variant="body2" color="error">
+      Loan Requests Expire cannot be negative
+    </Typography>
+  )}
+
+</Grid>
+
+ <Grid item xs={2}>
+  {loanPaymentCycle < 0 && (
+    <Typography variant="body2" color="error">
+      Loan Payment Cycle cannot be negative
+    </Typography>
+  )}
+</Grid>
+
+
+<Grid item xs={2}>
+  {defaultLoans < 0 && (
+    <Typography variant="body2" color="error">
+      Default Loans cannot be negative
+    </Typography>
+  )}
+</Grid>
+  
+<Grid item xs={2}>
+  {loanProcessFee < 0 && (
+    <Typography variant="body2" color="error">
+      Loan Process Fee cannot be negative
+    </Typography>
+  )}
+  </Grid>
+
+  <Grid item xs={2}>
+  {loanProcessFee > 100 && (
+    <Typography variant="body2" color="error">
+      Loan Process Fee cannot be more than 100
+    </Typography>
+  )}
+</Grid>
+
+</Grid>
+ 
+ 
+
+
               <Grid item xs={6}>
                 <TextField
                   fullWidth
